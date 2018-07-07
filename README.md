@@ -120,7 +120,9 @@
 | 4         | CSS 预处理器 | Sass, Less等  |
 | 3         | 服务器语言   | Node.js 等|
 | 4         | 计算机网络   | HTTP 相关知识 |
-| 5         | 社区         | [GitHub Trending][14], [Reddit][15], [Medium][16], 订阅 JavaScript Weekly, 微博 & Twitter 等|
+| 4         | 微信小程序   | [`文档`](https://developers.weixin.qq.com/miniprogram/dev/)  [`mpvue`](http://mpvue.com/)|
+| 5         | 社区         | [GitHub Trending][14], [Reddit][15], [Medium][16], 订阅 JavaScript Weekly, 微博 & Twitter & 掘金等|
+
 
 ---
 
@@ -129,8 +131,9 @@
  - **看书看不懂的部分就跳过!! 因为没有弄懂的以后实践的时候自然会弄懂的** 总之要看快速看完一遍！:sunglasses::sunglasses:
  - 看书的时候多做笔记:pencil2::pencil2:（用MarkDown做笔记）
  - 多动手写代码，写得多才学得多。学到的东西尽量实际地打出来`demo`。对于一个方法或者数据类型，写着写着才能发现它的一些细节和特色。
- - 遇到不懂的地方请 google，或者问小伙伴，或者提 issue，或者问师兄 ... 师姐 :new_moon_with_face::new_moon_with_face:
+ - 遇到不懂的地方请 google，或者问小伙伴，或者提 issue，或者问师兄师姐
  - 加油哦:rocket: 这将是一个非常充实的假期 :punch::punch:
+ - 放松时不可以偷偷去浪(**有的话一定要约师兄师姐哦!!!**)
 
 
 [1]: https://github.com/2017-TopView-FrontEnd/JavaScript-For-Us/issues
