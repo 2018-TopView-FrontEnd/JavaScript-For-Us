@@ -113,6 +113,7 @@
 
 | Recommend | Type         | Description |
 | ----      | ----         | ----        |
+| 4         | 浏览器的兼容     | 对主流浏览器的兼容|
 | 5         | JS 框架      | React, Angular, Vue 等|
 | 5         | 打包工具     | Webpack，Gulp等        |
 | 5         | 代码规范     | 使用eslint等           |
