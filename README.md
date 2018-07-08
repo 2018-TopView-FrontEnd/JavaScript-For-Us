@@ -137,7 +137,7 @@
  - 放松时不可以偷偷去浪(**有的话一定要约师兄师姐哦!!!**)
 
 
-[1]: https://github.com/2017-TopView-FrontEnd/JavaScript-For-Us/issues
+[1]: https://github.com/2018-TopView-FrontEnd/JavaScript-For-Us/issues
 [2]: https://book.douban.com/subject/10546125/
 [3]: https://www.freecodecamp.com/
 [4]: https://github.com/
