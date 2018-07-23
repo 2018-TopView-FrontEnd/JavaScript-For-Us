@@ -1,0 +1,179 @@
+#### **0级DOM**
+
+0级DOM事件分为两种
+
+- 行内事件:在标签中写事件
+- 元素.on事件名=函数
+
+1. 行内
+
+
+    <input type="button" id="btn" value="按钮" onclick="alert('aaa')">
+ 
+2. 元素.on事件名=函数
+ 
+
+    document.getElementById("btn").onclick = function () {
+    alert('aaaa');
+    }
+- 这样的事件处理程序最大的缺点就是HTML于JS强耦合，我们一旦需要修改函数名就得修改两个地方。
+- 当然其优点是不需要操作DOM来完成事件的绑定。
+- 我们可以通过给事件处理属性赋值null来解绑事件。
+
+
+#### **DOM2级事件**
+
+DOM2级事件只有一个：监听方法
+
+有两个方法用来添加和移除事件处理程序：
+- addEventListener()
+- removeEventListener()。
+
+它们都有三个参数：
+- 第一个参数是事件名（如click）；
+- 第二个参数是事件处理程序函数；
+- 第三个参数如果是true则表示在捕获阶段调用，为false表示在冒泡阶段调用。
+ 
+addEventListener():可以为元素添加多个事件处理程序，触发时会按照添加顺序依次调用。
+
+removeEventListener():不能移除匿名添加的函数。
+
+    document.getElementById("btn").addEventListener("click", 
+        function(){
+            alert('aaaa')
+        }, false);
+
+
+需要注意的**是IE8级以下版本**不支持addEventListener和removeEventListener，需要用attachEvent和detachEvent来实现，如
+
+    btn.attachEvent('onclick', showFn); // 绑定事件 
+    btn.detachEvent('onclick', showFn); // 解绑事件
+这里我们不需要传入第三个参数，因为**IE8级以下版本只支持冒泡型事件。**
+事件监听函数内的this关键字指向了window对象，而不是当前元素（IE的一个巨大缺点）        
+#### DOM3级事件
+DOM3级事件在DOM2级事件的基础上添加了更多的事件类型，全部类型如下：
+- UI事件，当用户与页面上的元素交互时触发，如：load、scroll
+- 焦点事件，当元素获得或失去焦点时触发，如：blur、focus
+- 鼠标事件，当用户通过鼠标在页面执行操作时触发如：dbclick、mouseup
+- 滚轮事件，当使用鼠标滚轮或类似设备时触发，如：mousewheel
+- 文本事件，当在文档中输入文本时触发，如：textInput
+- 键盘事件，当用户通过键盘在页面上执行操作时触发，如：keydown、keypress
+- 合成事件，当为IME（输入法编辑器）输入字符时触发，如：compositionstart
+- 变动事件，当底层DOM结构发生变化时触发，如：DOMsubtreeModified
+- 同时DOM3级事件也允许使用者自定义一些事件。  
+
+#### 事件冒泡和事件捕获
+##### 1.事件冒泡
+所谓事件冒泡就是事件像泡泡一样从最开始生成的地方一层一层往上冒，比如上图中a标签为事件目标，点击a标签后同时也会触发p、li上的点击事件，一层一层向上直至最外层的html或document。下面是代码示例：
+
+    <div id="box">
+        <a id="child">事件冒泡</a>
+    </div>
+    <script>
+        var box = document.getElementById('box'),
+        child = document.getElementById('child');
+        child.addEventListener('click', 
+            function() {
+                alert('我是目标事件');
+            }, false);
+        box.addEventListener('click',
+            function() {
+                alert('事件冒泡至DIV');
+            }, false);
+    </script>
+上面的代码运行后我们点击a标签，首先会弹出'我是目标事件'提示，然后又会弹出'事件冒泡至DIV'的提示
+
+**阻止事件冒泡的方法**
+
+Event对象中的stopPropagation方法，如：
+
+    child.addEventListener('click', 
+        function(e) {
+            alert('我是目标事件');
+            e.stopPropagation();
+        }, false);
+加上stopPropagation方法后，我们再次点击a标签就不会触发div上的click事件了。
+
+##### 2.事件捕获
+和事件冒泡相反，事件捕获是自上而下执行，我们只需要将addEventListener的第三个参数改为true就行。
+
+    <div id="box">
+        <a id="child">事件冒泡</a>
+    </div>
+    <script>
+        var box = document.getElementById('box'),
+        child = document.getElementById('child');
+        child.addEventListener('click',              function() {
+                alert('我是目标事件');
+            }, true);
+        box.addEventListener('click', 
+            function() {
+                alert('事件冒泡至DIV');
+            }, true);
+    </script>
+此时我们点击a标签，首先弹出的是'事件冒泡至DIV'，其次弹出的是'我是目标事件'，正好与事件冒泡相反。
+
+#### Event对象
+Event对象其实是一个事件处理程序的参数，当调用事件时，我们只需要将其传入事件函数就可以获取。在IE8及以前版本之中，通过设置属性注册事件处理程序时，调用的时候并未传递事件对象，需要通过全局对象window.event来获取。
+
+##### 1.preventDefault
+preventDefault方法用于取消事件的默认操作，比如a链接的跳转行为和表单自动提交行为就可以用preventDefault方法来取消。如：
+
+    <a id="go" href="https://www.baidu.com/">禁止跳转</a>
+    var go = document.getElementById('go');
+    function goFn(event) {
+        event.preventDefault();
+        console.log('我没有跳转！');
+    }
+    go.addEventListener('click', goFn, false);
+    
+在IE9之前的浏览器中需要设置event对象的returnValue属性为false来实现。
+
+
+##### 2.type属性
+通过type我们可以获取事件发生的类型，比如点击事件我们获取的是'click'字符串。
+
+    var go = document.getElementById('go');
+    function goFn(event) {
+        console.log(event.type); // 输出'click'
+    }
+    go.addEventListener('click', goFn, false);
+##### 3.target属性 *（事件委托）*
+target属性主要用于获取事件的目标对象，比如我们点击a标签获取的是a标签的html对象。
+
+在IE8及之前版本，我们需要使用srcElement而非target。
+#### 4. 鼠标事件属性
+在用鼠标触发事件时，主要的事件属性包含鼠标的位置和按键的状态，比如：clientX和clientY指定了鼠标在窗口坐标中的位置，button和which指定了按下的鼠标键是哪个。
+
+    function moveFn(event) {
+        console.log(event.screenX) // 获取鼠标基于屏幕的X轴坐标
+        console.log(event.screenY) // 获取鼠标基于屏幕的Y轴坐标
+        console.log(event.clientX) // 获取鼠标基于浏览器窗口的X轴坐标
+        console.log(event.clientY) // 获取鼠标基于浏览器窗口的Y轴坐标
+        console.log(event.pageX) // 获取鼠标基于文档的X轴坐标
+        console.log(event.pageY) // 获取鼠标基于文档的Y轴坐标
+    }
+    function clickFn(event) {
+        console.log(event.button) // 获取鼠标按下的键。非IE浏览器中0为鼠标左键，1为鼠标中键，2为鼠标右键
+        console.log(event.which) // 获取指定事件上哪个键盘键或鼠标按钮被按下
+    }
+    document.addEventListener('mouseover', moveFn, false);
+    document.addEventListener('click', clickFn, false);
+##### 5.键盘事件属性
+在用键盘触发事件时，主要的事件属性包含键盘的按键keyCode和是否按下特殊键，比如：keyCode指定了按下键的键码值，ctrlKey指定是否按下了ctrl键。
+
+    function keyFn(event) {
+        console.log(event.keyCode); // 获取按下键的键码值
+        console.log(event.ctrlKey); // 获取是否按下了ctrl键
+        console.log(event.shiftKey); // 获取是否按下了shift键
+        console.log(event.altKey); // 获取是否按下了alt键
+        console.log(event.metaKey); // 获取是否按下了meta键
+    }
+    document.addEventListener('keyup', keyFn, false);
+    
+参考网站
+
+- https://blog.csdn.net/u013035060/article/details/60770477
+- https://www.jb51.net/article/99094.htm
+- https://www.jb51.net/article/99099.htm
+- https://www.cnblogs.com/Chen-XiaoJun/p/6210987.html
