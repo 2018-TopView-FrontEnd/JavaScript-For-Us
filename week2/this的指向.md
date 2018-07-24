@@ -7,7 +7,6 @@
 **this 中的四种绑定方式 ?**
 
 ##  一 默认绑定
-
     console.log(this === window); 
     console.log(this.document === document); 
     this.a = 91;
